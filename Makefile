@@ -1,7 +1,7 @@
 all:
 	mkdir -p build
 	cd build
-	rebuild -I src/ snek.native
+	rebuild -r -I src/ snek.native
 	mv snek.native snek
 
 clean:
