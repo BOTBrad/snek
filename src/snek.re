@@ -8,10 +8,11 @@ let b : Board.board = {
 let rec main () => {
   let line = read_line ();
   if (line != "exit") {
-    print_int b.width;
-    print_char '\n';
-    print_string line;
-    print_char '\n';
+    let view = Board.view b;
+    Array.iter (fun a => {
+      Array.iter print_char a;
+      print_char '\n'
+    }) view;
     main ()
   }
 };
