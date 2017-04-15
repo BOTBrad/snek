@@ -10,13 +10,18 @@ let rec main () => {
   let line = read_line ();
   if (line != "exit") {
     let wall = String.make (b.width + 2) '#' ^ "\n";
-    let view = Board.view b;
     print_string wall;
-    Array.iter (fun a => {
+    for y in 0 to b.height {
       print_char '#';
-      Array.iter print_char a;
-      print_string "#\n"
-    }) view;
+      for x in 0 to b.width {
+        if (Snek.at x y s) {
+          print_char '#'
+        } else {
+          print_char ' '
+        };
+      };
+      print_string "#\n";
+    };
     print_string wall;
     main ()
   }

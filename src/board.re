@@ -3,6 +3,3 @@ type board = {
   height :int,
 };
 
-let view (b :board) :array (array char) =>
-  Array.make b.height (Array.make b.width ' ');
-
