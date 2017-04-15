@@ -3,18 +3,21 @@ let b :Board.board = {
   height: 20,
 };
 
-let s :Snek.snek =
-  Snek.make 4 (5, 5);
+let wall = String.make (b.width + 2) '#' ^ "\n";
 
-let rec main () => {
+let rec main (s :Snek.snek) => {
   let line = read_line ();
   if (line != "exit") {
-    let wall = String.make (b.width + 2) '#' ^ "\n";
+    let dir = switch (Snek.to_dir "w" "a" "d" "s" line) {
+      | Some d => d
+      | None => Snek.current_dir s
+    };
+    let new_s = Snek.turn dir s;
     print_string wall;
     for y in 0 to b.height {
       print_char '#';
       for x in 0 to b.width {
-        if (Snek.at x y s) {
+        if (Snek.at x y new_s) {
           print_char '#'
         } else {
           print_char ' '
@@ -23,9 +26,9 @@ let rec main () => {
       print_string "#\n";
     };
     print_string wall;
-    main ()
+    main new_s
   }
 };
 
-main ();
+main (Snek.make 4 { pos: (5, 5), dir: Snek.Left });
 
