@@ -1,10 +1,10 @@
-let b : Board.board = {
+let b :Board.board = {
   width: 20,
   height: 20,
 };
 
-let s : Snek.snek =
-  Ring.make 4 (5, 5);
+let s :Snek.snek =
+  Snek.make 4 (5, 5);
 
 let rec main () => {
   let line = read_line ();

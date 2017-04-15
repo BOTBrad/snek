@@ -1,6 +1,6 @@
 type board = {
-  width: int,
-  height: int,
+  width :int,
+  height :int,
 };
 
 let view (b :board) :array (array char) =>
