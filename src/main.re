@@ -5,6 +5,9 @@ let b : Board.board = {
   height: 20,
 };
 
+let s : Snek.snek =
+  Ring.make 4 (5, 5);
+
 let rec main () => {
   let line = read_line ();
   if (line != "exit") {
