@@ -1,5 +1,3 @@
-let module Board = Board;
-
 let b : Board.board = {
   width: 20,
   height: 20,
