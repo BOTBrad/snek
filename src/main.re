@@ -7,9 +7,9 @@ let wall = String.make (b.width + 2) '#' ^ "\n";
 
 let rec main (s :Snek.snek) => {
   print_string wall;
-  for y in 0 to b.height {
+  for y in 0 to (b.height - 1) {
     print_char '#';
-    for x in 0 to b.width {
+    for x in 0 to (b.width - 1) {
       if (Snek.at x y s) {
         print_char '#'
       } else {
