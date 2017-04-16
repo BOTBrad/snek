@@ -5,11 +5,13 @@ type direction =
   | Down;
 
 let to_dir (up :'a) (left :'a) (right :'a) (down :'a) (dir :'a) :option direction =>
-  if (dir == up) { Some Up } /* TODO: can this be less ugly? :( */
-  else if (dir == left) { Some Left }
-  else if (dir == right) { Some  Right }
-  else if (dir == down) { Some Down }
-  else { None };
+  switch () {
+    | _ when dir == up => Some Up
+    | _ when dir == left => Some Left
+    | _ when dir == right => Some  Right
+    | _ when dir == down => Some Down
+    | _ => None
+  };
 
 type segment = {
   pos :(int, int),
