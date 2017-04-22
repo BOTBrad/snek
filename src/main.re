@@ -24,6 +24,13 @@ let view (b :Board.board) (s :Snek.snek) :unit => {
 let rec main (s :Snek.snek) :unit => {
   view b s;
   let line = read_line ();
+  /* stop gap solution to test growing */
+  let s =
+    if (line == "g") {
+      Snek.grow 3 s
+    } else {
+      s
+    };
   let dir = switch (Snek.to_dir "w" "a" "d" "s" line) {
     | Some d => d
     | None => Snek.current_dir s

@@ -83,3 +83,23 @@ let turn (dir :direction) (b :Board.board) (s :snek) :status => {
   }
 };
 
+let grow (amount :int) (s :snek) :snek => {
+  let old_len = Array.length s.segs;
+  let new_len = old_len + amount;
+  let tail = s.segs.((s.head + old_len - 1) mod old_len);
+  let new_arr = Array.make new_len tail;
+  /*
+    to go down the length of the old snake,
+    we start at s.head then go backwards
+  */
+  for raw_idx in 0 to (old_len - 1) {
+    let old_idx = (s.head + old_len - raw_idx) mod old_len;
+    let new_idx = new_len - raw_idx - 1;
+    Array.set new_arr new_idx s.segs.(old_idx);
+  };
+  {
+    head: new_len - 1,
+    segs: new_arr,
+  }
+};
+
