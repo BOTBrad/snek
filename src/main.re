@@ -5,7 +5,7 @@ let b :Board.board = {
 
 let wall = String.make (b.width + 2) '#' ^ "\n";
 
-let rec main (s :Snek.snek) => {
+let view (b :Board.board) (s :Snek.snek) :unit => {
   print_string wall;
   for y in 0 to (b.height - 1) {
     print_char '#';
@@ -18,7 +18,11 @@ let rec main (s :Snek.snek) => {
     };
     print_string "#\n";
   };
-  print_string wall;
+  print_string wall
+};
+
+let rec main (s :Snek.snek) :unit => {
+  view b s;
   let line = read_line ();
   let dir = switch (Snek.to_dir "w" "a" "d" "s" line) {
     | Some d => d
