@@ -20,13 +20,13 @@ let rec main (s :Snek.snek) => {
   };
   print_string wall;
   let line = read_line ();
-  if (line != "exit") {
-    let dir = switch (Snek.to_dir "w" "a" "d" "s" line) {
-      | Some d => d
-      | None => Snek.current_dir s
-    };
-    let new_s = Snek.turn dir s;
-    main new_s
+  let dir = switch (Snek.to_dir "w" "a" "d" "s" line) {
+    | Some d => d
+    | None => Snek.current_dir s
+  };
+  switch (Snek.turn dir b s) {
+    | Ok new_s => main new_s
+    | Crash _ => ()
   }
 };
 

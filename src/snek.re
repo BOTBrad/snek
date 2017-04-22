@@ -63,14 +63,23 @@ let at (x :int) (y :int) (s :snek) :bool =>
 let current_dir (s :snek) :direction =>
   s.segs.(s.head).dir;
 
-let turn (dir :direction) (s :snek) :snek => {
+type status =
+  | Ok snek
+  | Crash snek;
+
+let turn (dir :direction) (b :Board.board) (s :snek) :status => {
   let new_seg = move_seg dir s.segs.(s.head);
-  let new_arr = Array.copy s.segs;
-  let new_head = (s.head + 1) mod (Array.length new_arr);
-  Array.set new_arr new_head new_seg;
-  {
-    head: new_head,
-    segs: new_arr,
+  let (x, y) = new_seg.pos;
+  if (x < 0 || y < 0 || x >= b.width || y >= b.height) {
+    Crash s
+  } else {
+    let new_arr = Array.copy s.segs;
+    let new_head = (s.head + 1) mod (Array.length new_arr);
+    Array.set new_arr new_head new_seg;
+    Ok {
+      head: new_head,
+      segs: new_arr,
+    }
   }
 };
 
