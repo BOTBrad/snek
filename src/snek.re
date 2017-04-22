@@ -63,23 +63,14 @@ let at (x :int) (y :int) (s :snek) :bool =>
 let current_dir (s :snek) :direction =>
   s.segs.(s.head).dir;
 
-type status =
-  | Ok snek
-  | Crash snek;
-
-let turn (dir :direction) (b :Board.board) (s :snek) :status => {
+let turn (dir :direction) (s :snek) :snek => {
   let new_seg = move_seg dir s.segs.(s.head);
-  let (x, y) = new_seg.pos;
-  if (x < 0 || y < 0 || x >= b.width || y >= b.height) {
-    Crash s
-  } else {
-    let new_arr = Array.copy s.segs;
-    let new_head = (s.head + 1) mod (Array.length new_arr);
-    Array.set new_arr new_head new_seg;
-    Ok {
-      head: new_head,
-      segs: new_arr,
-    }
+  let new_arr = Array.copy s.segs;
+  let new_head = (s.head + 1) mod (Array.length new_arr);
+  Array.set new_arr new_head new_seg;
+  {
+    head: new_head,
+    segs: new_arr,
   }
 };
 
@@ -100,6 +91,24 @@ let grow (amount :int) (s :snek) :snek => {
   {
     head: new_len - 1,
     segs: new_arr,
+  }
+};
+
+
+let crashed (b :Board.board) (s :snek) :bool => {
+  /* indexed fold_left which i assumed would exist but does not */
+  let foldli (fn :(int => 'a => 'b => 'a)) (default :'a) (arr :array 'b) :'a =>
+    Array.fold_left (fun (i, r) v => (i + 1, fn i r v)) (0, default) arr |> snd;
+  let (x, y) = s.segs.(s.head).pos;
+  if (x < 0 || y < 0 || x >= b.width || y >= b.height) {
+    true
+  } else {
+    let test index result seg => result || index != s.head && {
+      let (seg_x, seg_y) = seg.pos;
+      seg_x == x && seg_y == y
+    };
+    /* TODO: compiler is complaining about Array.exists? */
+    foldli test false s.segs
   }
 };
 

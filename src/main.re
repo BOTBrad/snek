@@ -35,9 +35,11 @@ let rec main (s :Snek.snek) :unit => {
     | Some d => d
     | None => Snek.current_dir s
   };
-  switch (Snek.turn dir b s) {
-    | Ok new_s => main new_s
-    | Crash _ => ()
+  let new_s = Snek.turn dir s;
+  if (Snek.crashed b new_s) {
+    ()
+  } else {
+    main new_s
   }
 };
 
