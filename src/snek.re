@@ -94,7 +94,6 @@ let grow (amount :int) (s :snek) :snek => {
   }
 };
 
-
 let crashed (s :snek) :bool => {
   /* indexed fold_left which i assumed would exist but does not */
   let foldli (fn :(int => 'a => 'b => 'a)) (default :'a) (arr :array 'b) :'a =>
