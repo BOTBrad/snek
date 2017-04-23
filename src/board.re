@@ -29,3 +29,6 @@ let crashed (s :Snek.snek) (b :board) :bool => {
   x < 0 || y < 0 || x >= b.width || y >= b.height
 };
 
+let hit_fruit (s :Snek.snek) (b :board) :bool =>
+  s.segs.(s.head).pos == b.fruit;
+

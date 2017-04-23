@@ -20,29 +20,21 @@ let view (b :Board.board) (s :Snek.snek) :unit => {
 let rec main (b :Board.board) (s :Snek.snek) :unit => {
   view b s;
   let line = read_line ();
-  /* stop gap solution to test growing */
-  let s =
-    if (line == "g") {
-      Snek.grow 3 s
-    } else {
-      s
-    };
-  /* stop gap solution to test fruit regenration */
-  let b =
-    if (line == "f") {
-      Board.new_fruit s b
-    } else {
-      b
-    };
   let dir = switch (Snek.to_dir "w" "a" "d" "s" line) {
     | Some d => d
     | None => Snek.current_dir s
   };
-  let new_s = Snek.turn dir s;
-  if (Snek.crashed new_s || Board.crashed new_s b) {
+  let s = Snek.turn dir s;
+  if (Snek.crashed s || Board.crashed s b) {
     ()
   } else {
-    main b new_s
+    let (b, s) =
+      if (Board.hit_fruit s b) {
+        (Board.new_fruit s b, Snek.grow 5 s)
+      } else {
+        (b, s)
+      };
+    main b s
   }
 };
 
