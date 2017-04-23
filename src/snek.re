@@ -95,20 +95,17 @@ let grow (amount :int) (s :snek) :snek => {
 };
 
 
-let crashed (b :Board.board) (s :snek) :bool => {
+let crashed (s :snek) :bool => {
   /* indexed fold_left which i assumed would exist but does not */
   let foldli (fn :(int => 'a => 'b => 'a)) (default :'a) (arr :array 'b) :'a =>
     Array.fold_left (fun (i, r) v => (i + 1, fn i r v)) (0, default) arr |> snd;
   let (x, y) = s.segs.(s.head).pos;
-  if (x < 0 || y < 0 || x >= b.width || y >= b.height) {
-    true
-  } else {
-    let test index result seg => result || index != s.head && {
-      let (seg_x, seg_y) = seg.pos;
-      seg_x == x && seg_y == y
-    };
-    /* TODO: compiler is complaining about Array.exists? */
-    foldli test false s.segs
-  }
+  /* make sure the head can't crash into itself */
+  let test index result seg => result || index != s.head && {
+    let (seg_x, seg_y) = seg.pos;
+    seg_x == x && seg_y == y
+  };
+  /* TODO: compiler is complaining about Array.exists? */
+  foldli test false s.segs
 };
 
