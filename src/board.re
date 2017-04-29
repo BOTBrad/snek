@@ -32,3 +32,9 @@ let crashed (s :Snek.snek) (b :board) :bool => {
 let hit_fruit (s :Snek.snek) (b :board) :bool =>
   s.segs.(s.head).pos == b.fruit;
 
+let won (s :Snek.snek) (b :board) :bool => {
+  ignore s;
+  ignore b;
+  false
+};
+

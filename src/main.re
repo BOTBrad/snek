@@ -26,7 +26,17 @@ let rec main (b :Board.board) (s :Snek.snek) :unit => {
   };
   let s = Snek.turn dir s;
   if (Snek.crashed s || Board.crashed s b) {
-    ()
+    if (Board.won s b) {
+      print_endline "you win!"
+    } else {
+      print_endline "you lost :(\nplay again? (y/n)";
+      let again = read_line ();
+      if (again.[0] == 'y') {
+        run_game ()
+      } else {
+        ()
+      }
+    }
   } else {
     let (b, s) =
       if (Board.hit_fruit s b) {
@@ -36,10 +46,14 @@ let rec main (b :Board.board) (s :Snek.snek) :unit => {
       };
     main b s
   }
+}
+
+and run_game () => {
+  let s = Snek.make 4 { pos: (5, 5), dir: Snek.Left };
+  let b = Board.make 20 20 s;
+  main b s
 };
 
 Random.self_init ();
-let s = Snek.make 4 { pos: (5, 5), dir: Snek.Left };
-let b = Board.make 20 20 s;
-main b s;
+run_game ();
 
