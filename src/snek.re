@@ -63,6 +63,9 @@ let at (x :int) (y :int) (s :snek) :bool =>
 let hd (s :snek) :segment =>
   (List.hd s.segs);
 
+let length (s :snek) :int =>
+  (List.length s.segs);
+
 let current_dir (s :snek) :direction =>
   (hd s).dir;
 

@@ -49,7 +49,7 @@ let rec main (b :Board.board) (s :Snek.snek) :unit => {
 }
 
 and run_game () => {
-  let s = Snek.make 4 { pos: (5, 5), dir: Snek.Left };
+  let s = Snek.make 4 { pos: (5, 5), dir: Snek.Right };
   let b = Board.make 20 20 s;
   main b s
 };
