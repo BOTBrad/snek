@@ -25,12 +25,12 @@ let make (w :int) (h :int) (s :Snek.snek) :board =>
   };
 
 let crashed (s :Snek.snek) (b :board) :bool => {
-  let (x, y) = s.segs.(s.head).pos;
+  let (x, y) = (Snek.hd s).pos;
   x < 0 || y < 0 || x >= b.width || y >= b.height
 };
 
 let hit_fruit (s :Snek.snek) (b :board) :bool =>
-  s.segs.(s.head).pos == b.fruit;
+  (Snek.hd s).pos == b.fruit;
 
 let won (s :Snek.snek) (b :board) :bool => {
   ignore s;
