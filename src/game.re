@@ -3,14 +3,9 @@ type state = {
   board :(Board.board),
 };
 
-let step (g :state) :option state => {
-  let line = read_line ();
-  let d = switch (Snek.to_dir "w" "a" "d" "s" line) {
-    | Some d => d
-    | None => Snek.current_dir g.snek
-  };
-  let s = Snek.turn d g.snek;
+let step (d :Snek.direction) (g :state) :option state => {
   let b = g.board;
+  let s = Snek.turn d g.snek;
   if (Snek.crashed s || Board.crashed s b) {
     if (Board.won s b) {
       print_endline "you win!"
