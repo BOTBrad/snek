@@ -4,11 +4,9 @@ type board = {
   fruit :(int, int),
 };
 
-let won (s :Snek.snek) (b :board) :bool =>
-  (Snek.length s) >= (b.width * b.height);
-
 let rec new_fruit (s :Snek.snek) (b :board) :board =>
-  if (won s b) {
+  /* if the snake is as big as the board, give up */
+  if (Snek.length s >= b.width * b.height) {
     {
       ...b,
       fruit: (-1, -1),
@@ -32,11 +30,6 @@ let make (w :int) (h :int) (s :Snek.snek) :board =>
     height: h,
     fruit: (0, 0),
   };
-
-let crashed (s :Snek.snek) (b :board) :bool => {
-  let (x, y) = (Snek.hd s).pos;
-  x < 0 || y < 0 || x >= b.width || y >= b.height
-};
 
 let hit_fruit (s :Snek.snek) (b :board) :bool =>
   (Snek.hd s).pos == b.fruit;

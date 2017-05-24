@@ -3,27 +3,45 @@ type state = {
   board :(Board.board),
 };
 
+type victory_status =
+  | Ok
+  | Crashed
+  | Won;
+
+let check_victory (s :Snek.snek) (b :Board.board) :victory_status => {
+  let (x, y) = (Snek.hd s).pos;
+  if (x < 0 || y < 0 || x >= b.width || y >= b.height || (Snek.crashed s)) {
+    Crashed
+  } else if (Snek.length s >= b.width * b.height) {
+    Won
+  } else {
+    Ok
+  }
+};
+
 let step (d :Snek.direction) (g :state) :option state => {
   let b = g.board;
   let s = Snek.turn d g.snek;
-  if (Snek.crashed s || Board.crashed s b) {
-    if (Board.won s b) {
-      print_endline "you win!"
-    } else {
+  switch (check_victory s b) {
+    | Won => {
+      print_endline "you win!";
+      None
+    }
+    | Crashed => {
       /* TODO: replay temporarily broken */
-      print_endline "you lost :(\nplay again? (y/n)"
+      print_endline "you lost :(\nplay again? (y/n)";
+      None
     };
-    None
-  } else {
-    let (b, s) =
-      if (Board.hit_fruit s b) {
+    | Ok => {
+      let (b, s) = if (Board.hit_fruit s b) {
         (Board.new_fruit s b, Snek.grow 5 s)
       } else {
         (b, s)
       };
-    Some {
-      snek: s,
-      board: b,
+      Some {
+        snek: s,
+        board: b,
+      }
     }
   }
 };
