@@ -1,4 +1,6 @@
-let view (b :Board.board) (s :Snek.snek) :unit => {
+let view (g :Game.state) :unit => {
+  let s = g.snek;
+  let b = g.board;
   let wall = String.make (b.width + 2) '#' ^ "\n";
   print_string wall;
   for y in 0 to (b.height - 1) {
@@ -17,43 +19,16 @@ let view (b :Board.board) (s :Snek.snek) :unit => {
   print_string wall
 };
 
-let rec main (b :Board.board) (s :Snek.snek) :unit => {
-  view b s;
-  let line = read_line ();
-  let dir = switch (Snek.to_dir "w" "a" "d" "s" line) {
-    | Some d => d
-    | None => Snek.current_dir s
-  };
-  let s = Snek.turn dir s;
-  if (Snek.crashed s || Board.crashed s b) {
-    if (Board.won s b) {
-      print_endline "you win!"
-    } else {
-      print_endline "you lost :(\nplay again? (y/n)";
-      let again = read_line ();
-      if (again.[0] == 'y') {
-        run_game ()
-      } else {
-        ()
-      }
-    }
-  } else {
-    let (b, s) =
-      if (Board.hit_fruit s b) {
-        (Board.new_fruit s b, Snek.grow 5 s)
-      } else {
-        (b, s)
-      };
-    main b s
+let rec main (g :Game.state) :unit => {
+  view g;
+  switch (Game.step g) {
+    | None => ();
+    | Some new_g => main new_g;
   }
-}
-
-and run_game () => {
-  let s = Snek.make 4 { pos: (5, 5), dir: Snek.Right };
-  let b = Board.make 20 20 s;
-  main b s
 };
 
 Random.self_init ();
-run_game ();
+let g = Game.make ();
+
+main g;
 
